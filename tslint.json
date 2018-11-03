@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "indent": [true, "spaces", 2]
+  },
+  "extends": [
+    "tslint-config-standard",
+    "tslint-config-prettier"
+  ]
+}

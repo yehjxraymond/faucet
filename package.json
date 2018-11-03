@@ -1,0 +1,27 @@
+{
+  "name": "faucet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "scripts": {
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/server.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "lint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.3.0",
+    "grpc": "^1.16.0"
+  },
+  "devDependencies": {
+    "@types/protobufjs": "^6.0.0",
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.5",
+    "typescript": "^3.1.6",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1"
+  }
+}
