@@ -9,13 +9,18 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "network": "ganache-cli -b 5 -m \"deputy apology card solution wage spot tray choice thing hollow peanut matrix\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.3.0",
-    "grpc": "^1.16.0"
+    "@types/web3": "^1.0.12",
+    "bn.js": "^4.11.8",
+    "grpc": "^1.16.0",
+    "lodash": "^4.17.11",
+    "web3": "^1.0.0-beta.36"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",
