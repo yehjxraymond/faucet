@@ -14,6 +14,7 @@ export class Funder {
   }
 
   async fund(account: string, amount: string|number) {
+    console.log(account, amount);
     return this.web3.eth.sendTransaction({
       from: this.fundingAccount,
       to: account,
