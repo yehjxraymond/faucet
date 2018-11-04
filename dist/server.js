@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
-const methods_1 = require("./methods");
+const funder_1 = require("./funder");
 const PROTO_PATH = __dirname + '/../faucet.proto';
 const RPC = "ws://localhost:8545";
 const FUNDING_ACCOUNT_PRIVATE = "0x678ae9837e83a4b356c01b741e36a9d4ef3ac916a843e8ae7d37b9dd2045f963";
-const funder = new methods_1.Funder({
+const funder = new funder_1.Funder({
     rpc: RPC,
     fundingAccount: FUNDING_ACCOUNT_PRIVATE
 });

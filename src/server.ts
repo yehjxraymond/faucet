@@ -1,5 +1,5 @@
 import {Server} from "./utils";
-import {Funder} from "./methods";
+import {Funder} from "./funder";
 
 const PROTO_PATH = __dirname + '/../faucet.proto';
 
