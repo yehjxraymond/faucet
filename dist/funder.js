@@ -12,21 +12,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const web3_1 = __importDefault(require("web3"));
+const await_semaphore_1 = require("await-semaphore");
 class Funder {
     constructor({ rpc, fundingAccount }) {
         this.rpc = rpc;
         this.web3 = new web3_1.default(rpc);
-        this.fundingAccountPrivate = fundingAccount;
-        this.fundingAccount = this.web3.eth.accounts.privateKeyToAccount(fundingAccount).address;
+        this.account = this.web3.eth.accounts.privateKeyToAccount(fundingAccount);
+        this.mutex = new await_semaphore_1.Mutex();
+        this.nonceArray = [];
+    }
+    _initNonce() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.nonce)
+                return this.nonce;
+            this.nonce = yield this.web3.eth.getTransactionCount(this.account.address, "pending");
+            return this.nonce;
+        });
     }
     fund(account, amount) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(account, amount);
-            return this.web3.eth.sendTransaction({
-                from: this.fundingAccount,
+            let nonceToUse;
+            let tx;
+            yield this.mutex.use(() => __awaiter(this, void 0, void 0, function* () {
+                yield this._initNonce();
+                nonceToUse = this.nonce;
+                this.nonce += 1;
+                this.nonceArray.push(nonceToUse);
+            }));
+            tx = {
+                gas: 21000,
                 to: account,
-                value: amount
-            });
+                from: this.account.address,
+                value: amount,
+                nonce: nonceToUse,
+            };
+            console.log(this.nonceArray);
+            const signedTx = yield this.account.signTransaction(tx).catch((e) => console.log("ERRRR", e));
+            const txReceipt = yield this.web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch((e) => console.log("ERRRR2", e));
+            return txReceipt;
         });
     }
 }

@@ -53,9 +53,9 @@ describe("methods", () => {
       expect(diff.toString(10)).toBe("0");
     }, 20000);
 
-    test("multiple transaction", async () => {
+    test.only("multiple transaction", async () => {
       const amountToFund = "100";
-      const accounts = times(50, () => web3.eth.accounts.create());
+      const accounts = times(25, () => web3.eth.accounts.create());
 
       const balancesBeforePromises = accounts.map(acc => web3.eth.getBalance(acc.address));
       const balancesBefore = await Promise.all(balancesBeforePromises);
