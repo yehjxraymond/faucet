@@ -31,24 +31,23 @@ class Funder {
     }
     fund(account, amount) {
         return __awaiter(this, void 0, void 0, function* () {
-            let nonceToUse;
-            let tx;
+            let txPromise;
             yield this.mutex.use(() => __awaiter(this, void 0, void 0, function* () {
                 yield this._initNonce();
-                nonceToUse = this.nonce;
+                const nonceToUse = this.nonce;
                 this.nonce += 1;
                 this.nonceArray.push(nonceToUse);
+                const tx = {
+                    gas: 21000,
+                    to: account,
+                    from: this.account.address,
+                    value: amount,
+                    nonce: nonceToUse,
+                };
+                const signedTx = yield this.account.signTransaction(tx);
+                txPromise = this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
             }));
-            tx = {
-                gas: 21000,
-                to: account,
-                from: this.account.address,
-                value: amount,
-                nonce: nonceToUse,
-            };
-            console.log(this.nonceArray);
-            const signedTx = yield this.account.signTransaction(tx).catch((e) => console.log("ERRRR", e));
-            const txReceipt = yield this.web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch((e) => console.log("ERRRR2", e));
+            const txReceipt = yield txPromise;
             return txReceipt;
         });
     }

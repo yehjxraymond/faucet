@@ -24,28 +24,23 @@ export class Funder {
   }
 
   async fund(account: string, amount: string|number) {
-    let nonceToUse;
-    let tx;
-
+    let txPromise;
     await this.mutex.use(async () => {
       await this._initNonce();
-      nonceToUse = this.nonce;
+      const nonceToUse = this.nonce;
       this.nonce += 1;
       this.nonceArray.push(nonceToUse);
+      const tx = {
+        gas: 21000,
+        to: account,
+        from: this.account.address,
+        value: amount,
+        nonce: nonceToUse,
+      }
+      const signedTx = await this.account.signTransaction(tx);
+      txPromise = this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     });
-
-    tx = {
-      gas: 21000,
-      to: account,
-      from: this.account.address,
-      value: amount,
-      nonce: nonceToUse,
-    }
-
-    console.log(this.nonceArray);
-
-    const signedTx = await this.account.signTransaction(tx).catch((e: any) => console.log("ERRRR", e));
-    const txReceipt = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch((e: any) => console.log("ERRRR2", e))
+    const txReceipt = await txPromise;
     return txReceipt;
   }
 }
