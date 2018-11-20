@@ -54,7 +54,7 @@ describe("methods", () => {
             expect(fundingTx).toBeTruthy();
             expect(diff.toString(10)).toBe("0");
         }), 20000);
-        test.only("multiple transaction", () => __awaiter(this, void 0, void 0, function* () {
+        test("multiple transaction", () => __awaiter(this, void 0, void 0, function* () {
             const amountToFund = "100";
             const accounts = lodash_1.times(25, () => web3.eth.accounts.create());
             const balancesBeforePromises = accounts.map(acc => web3.eth.getBalance(acc.address));

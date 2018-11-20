@@ -53,7 +53,7 @@ describe("methods", () => {
       expect(diff.toString(10)).toBe("0");
     }, 20000);
 
-    test.only("multiple transaction", async () => {
+    test("multiple transaction", async () => {
       const amountToFund = "100";
       const accounts = times(25, () => web3.eth.accounts.create());
 
